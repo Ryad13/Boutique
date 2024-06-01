@@ -1,0 +1,128 @@
+{% extends 'boutique/base.html' %}
+
+{% block content %}
+<style>
+
+body { padding-left: 20px; }
+
+.page-header {
+    background-color: #6a84aa;
+    margin-top: 0;
+    margin-bottom: 40px;
+    padding: 20px 20px 20px 40px;
+    font-family: Georgia, sans-serif;
+}
+
+.page-header h1,
+.page-header h1 a,
+.page-header h1 a:visited,
+.page-header h1 a:active {
+    color: #ffffff;
+    font-size: 36pt;
+    text-decoration: none;
+}
+ 
+h1,
+h2,
+h3,
+
+.date {
+    color: #828282;
+}
+ 
+.save {
+    float: right;
+}
+ 
+.post-form textarea,
+.post-form input {
+    width: 100%;
+}
+ 
+.top-menu,
+.top-menu:hover,
+.top-menu:visited {
+    color: #ffffff;
+    float: right;
+    font-size: 26pt;
+    margin-right: 20px;
+}
+ 
+.post {
+    margin-bottom: 70px;
+}
+ 
+.post h2 a,
+.post h2 a:visited {
+    color: #000000;
+}
+ 
+.post > .date,
+.post > .actions {
+    float: right;
+}
+ 
+.btn-default,
+.btn-default:visited {
+    color: #1300c2;
+    background: none;
+    border-color: #0000c2;
+}
+ 
+.btn-default:hover {
+    color: #FFFFFF;
+    background-color: #C25100;
+}
+
+</style>
+<div class="card mt-4">
+    <div class="card-header">
+        <h2 class="card-title">{{ commande.nom_client }} - Détails de la Commande</h2>
+        <h2>
+            {% if commande.is_delivered %}
+                Delivered
+            {% else %}
+                Not Delivered
+            {% endif %}
+        </h2>
+    </div>
+    <div class="card-body">
+        <p><strong>Date de Commande:</strong> {{ commande.date_commande }}</p>
+        <p><strong>État de la Commande:</strong> {{ commande.etat_commande }}</p>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Mettre à jour</button>
+        </form>
+
+        <h3 class="mt-4">Éléments de la Commande</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Produit</th>
+                    <th>Image</th>
+                    <th>Prix</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for element in order_elements %}
+                    <tr>
+                        <td>{{ element.produit.nom }}</td>
+                        <td>
+                            {% if element.produit.image %}
+                                <img src="{{ element.produit.image.url }}" alt="{{ element.produit.nom }}" style="width: 100px; height: auto;">
+                            {% else %}
+                                No Image
+                            {% endif %}
+                        </td>
+                        <td>{{ element.produit.prix }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div>
+            <h2>PRIX TOTAL : {{total_price}} €</h2>
+        </div>
+    </div>
+</div>
+{% endblock %}

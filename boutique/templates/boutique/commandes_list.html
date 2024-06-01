@@ -1,0 +1,70 @@
+{% extends 'boutique/base.html' %}
+
+{% block content %}
+<style>
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 80%;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .card-header {
+        background-color: #6a84aa;
+        color: white;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        padding: 10px 20px;
+    }
+
+    .card-title {
+        margin: 0;
+    }
+
+    .table {
+        margin-bottom: 0;
+    }
+
+    .images-container {
+        display: flex;
+        justify-content: right;
+        gap: 100px; 
+        margin-top: 20px;
+    }
+
+    .images-container img {
+        width: 45%; 
+        max-width: 400px;
+    }
+</style>
+
+<div class="card mt-4">
+    <div class="card-header">
+        <h2 class="card-title">Liste des Commandes</h2>
+    </div>
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nom du Client</th>
+                    <th>Date de Commande</th>
+                    <th>Commande délivrée</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for commande in commandes %}
+                    <tr>
+                        <td><a href="{% url 'commande_detail' pk=commande.pk %}">{{ commande.nom_client }}</a></td>
+                        <td>{{ commande.date_commande }}</td>
+                        <td>{{ commande.is_delivered }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="images-container">
+    <img src="static/image/waiter.jpg" alt="Image 1">
+</div>
+{% endblock %}
